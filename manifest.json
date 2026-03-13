@@ -1,0 +1,13 @@
+{
+  "domain": "schluter_oj",
+  "name": "Schluter OJ",
+  "version": "0.1.0",
+  "config_flow": true,
+  "documentation": "https://github.com/ton-org/ha-schluter-oj",
+  "issue_tracker": "https://github.com/ton-org/ha-schluter-oj/issues",
+  "iot_class": "cloud_polling",
+  "codeowners": ["@ton-user"],
+  "requirements": [],
+  "dependencies": [],
+  "loggers": ["custom_components.schluter_oj"]
+}
