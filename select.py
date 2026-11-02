@@ -8,9 +8,16 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.util import dt as dt_util
 
 from . import OJRuntimeData
-from .const import DOMAIN, MODE_TO_NAME, NAME_TO_MODE
+from .const import (
+    DOMAIN,
+    MODE_TO_NAME,
+    NAME_TO_MODE,
+    REGULATION_MODE_COMFORT,
+    format_comfort_end_time,
+)
 from .entity import OJGroupEntity
 
 
@@ -46,6 +53,8 @@ class OJGroupModeSelect(OJGroupEntity, SelectEntity):
 
         updated_group = deepcopy(self.group.raw_payload)
         updated_group["RegulationMode"] = mode
+        if mode == REGULATION_MODE_COMFORT:
+            updated_group["ComfortEndTime"] = format_comfort_end_time(dt_util.now())
 
         await self._runtime_data.api.async_update_group(updated_group)
         await self.coordinator.async_request_refresh()
