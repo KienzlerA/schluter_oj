@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta
+
 DOMAIN = "schluter_oj"
 
 CONF_HOST = "host"
@@ -18,6 +20,16 @@ REGULATION_MODE_SCHEDULE = 1
 REGULATION_MODE_COMFORT = 2
 REGULATION_MODE_BOOST = 8
 REGULATION_MODE_ECO = 9
+
+# OJ reverts Comfort to the week schedule when ComfortEndTime is the sentinel
+# 1900-01-01. Microline uses 4 h; night setback and day-away need longer.
+COMFORT_DURATION_MINUTES = 24 * 60
+
+
+def format_comfort_end_time(now: datetime) -> str:
+    """API expects local wall time without timezone suffix."""
+    end = now + timedelta(minutes=COMFORT_DURATION_MINUTES)
+    return end.strftime("%Y-%m-%dT%H:%M:%S")
 
 MODE_TO_NAME = {
     REGULATION_MODE_SCHEDULE: "schedule",
